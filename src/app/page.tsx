@@ -1,64 +1,105 @@
-import Image from "next/image";
+import { getPages, getPosts, getCategories } from '@/lib/wordpress';
 
-export default function Home() {
+export const dynamic = 'force-dynamic';
+
+export default async function Home() {
+  const [pages, posts, categories] = await Promise.all([
+    getPages({ _fields: 'id,title,slug,status,link,modified' }),
+    getPosts({ _fields: 'id,title,slug,status,link,modified' }),
+    getCategories(),
+  ]);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
+    <div dir="rtl" className="min-h-screen bg-gray-50">
+      <header className="bg-[#253F55] text-white py-6 px-8">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold">ברנדיני | לוח בקרה</h1>
+            <p className="text-blue-200 text-sm mt-1">מחובר ל-brndini.co.il</p>
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="inline-flex items-center gap-1.5 bg-green-500/20 text-green-300 px-3 py-1 rounded-full text-sm">
+              <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+              מחובר
+            </span>
             <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              href="https://brndini.co.il/wp-admin"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg text-sm transition-colors"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              פאנל וורדפרס
+            </a>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </header>
+
+      <main className="max-w-6xl mx-auto py-8 px-8">
+        {/* Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <p className="text-gray-500 text-sm">דפים</p>
+            <p className="text-3xl font-bold text-[#253F55] mt-1">{pages.length}</p>
+          </div>
+          <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <p className="text-gray-500 text-sm">פוסטים</p>
+            <p className="text-3xl font-bold text-[#253F55] mt-1">{posts.length}</p>
+          </div>
+          <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+            <p className="text-gray-500 text-sm">קטגוריות</p>
+            <p className="text-3xl font-bold text-[#253F55] mt-1">{categories.length}</p>
+          </div>
         </div>
+
+        {/* Posts */}
+        <section className="bg-white rounded-xl shadow-sm border border-gray-100 mb-8">
+          <div className="p-6 border-b border-gray-100">
+            <h2 className="text-xl font-bold text-[#253F55]">פוסטים אחרונים</h2>
+          </div>
+          <div className="divide-y divide-gray-50">
+            {posts.map((post) => (
+              <div key={post.id} className="p-4 px-6 hover:bg-gray-50 transition-colors flex items-center justify-between">
+                <div>
+                  <h3 className="font-medium text-gray-900" dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
+                  <p className="text-sm text-gray-400 mt-0.5">/{post.slug}</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className={`text-xs px-2 py-1 rounded-full ${post.status === 'publish' ? 'bg-green-50 text-green-600' : 'bg-yellow-50 text-yellow-600'}`}>
+                    {post.status === 'publish' ? 'מפורסם' : 'טיוטה'}
+                  </span>
+                  <a href={post.link} target="_blank" rel="noopener noreferrer" className="text-[#6EC1E4] hover:text-[#253F55] text-sm">
+                    צפה
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Pages */}
+        <section className="bg-white rounded-xl shadow-sm border border-gray-100">
+          <div className="p-6 border-b border-gray-100">
+            <h2 className="text-xl font-bold text-[#253F55]">דפים</h2>
+          </div>
+          <div className="divide-y divide-gray-50">
+            {pages.map((page) => (
+              <div key={page.id} className="p-4 px-6 hover:bg-gray-50 transition-colors flex items-center justify-between">
+                <div>
+                  <h3 className="font-medium text-gray-900" dangerouslySetInnerHTML={{ __html: page.title.rendered }} />
+                  <p className="text-sm text-gray-400 mt-0.5">/{page.slug}</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className={`text-xs px-2 py-1 rounded-full ${page.status === 'publish' ? 'bg-green-50 text-green-600' : 'bg-yellow-50 text-yellow-600'}`}>
+                    {page.status === 'publish' ? 'מפורסם' : 'טיוטה'}
+                  </span>
+                  <a href={page.link} target="_blank" rel="noopener noreferrer" className="text-[#6EC1E4] hover:text-[#253F55] text-sm">
+                    צפה
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
       </main>
     </div>
   );
