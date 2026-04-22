@@ -28,7 +28,18 @@
     "redirect_loops": 0,
     "broken_css_js_resources": 0,
     "true_orphans_after_category_check": 1,
-    "note_on_orphans": "Most pages classified as orphans by content-only crawler are in fact linked from category archives and Link Whisper related-posts widgets. Only 1 real orphan remains in the Websites category."
+    "note_on_orphans": "Most pages classified as orphans by content-only crawler are in fact linked from category archives and Link Whisper related-posts widgets. Only 1 real orphan remains in the Websites category.",
+    "hsts_header": "missing on cached pages (Cloudflare-served). Present on dynamic routes (wp-login).",
+    "url_normalization": {
+      "http_to_https": "301 OK",
+      "www_to_non_www": "301 OK",
+      "no_slash_to_trailing_slash": "301 OK",
+      "uppercase_slug_canonical": "returns 200 but canonical correctly points to lowercase",
+      "double_slash_canonical": "returns 200 but canonical incorrectly points to home (edge case, no internal links affected)"
+    },
+    "faq_schema_coverage": "63/63 pages with visible FAQ have FAQPage schema (100%)",
+    "heavy_images_over_200kb_on_key_pages": 0,
+    "schema_validation": "All JSON-LD blocks parse successfully across top pages (home/services/about/contact). Types include WebPage, BreadcrumbList, WebSite, ProfessionalService, FAQPage, AboutPage, ContactPage, ItemList, AggregateRating."
   },
   "fixes_applied_live": [
     "Yoast PHP redirects enabled; 7 x 301 redirects added for broken footer URLs (privacy, copywriting, SEO, 2 case-study + Hebrew/percent variants). All verified 301 -> final 200.",
@@ -37,7 +48,8 @@
     "Excerpts shortened on 3 posts with over-long meta descriptions.",
     "Elementor body-end snippet (327451) rewrites linkedin.com/company/brndini -> linkedin.com/company/mdn-il in both <a href> and <script type=application/ld+json>, site-wide, with MutationObserver.",
     "Added internal links from service hub pages (graphic design, copywriting, services index) to orphan service pages (flyer, rollup, facebook cover, about-page copywriting, careers).",
-    "Optimized heaviest homepage hero image: switched Elementor image widget from 2000x1333 (665KB) to 1024x1024 (348KB), adding responsive srcset + lazy loading. -48% weight on that asset, -23% on total homepage image payload."
+    "Optimized heaviest homepage hero image: switched Elementor image widget from 2000x1333 (665KB) to 1024x1024 (348KB), adding responsive srcset + lazy loading. -48% weight on that asset, -23% on total homepage image payload.",
+    "Added security meta snippet (327457) with Content-Security-Policy upgrade-insecure-requests + Referrer-Policy strict-origin-when-cross-origin at elementor_head."
   ],
   "snippets_deployed_via_rest": [
     {
@@ -54,6 +66,7 @@
   "requires_admin_access_not_rest": [
     "Yoast title template: Posts SEO title \"%%title%% %%sep%% %%sitename%%\" -> \"%%title%%\" to shorten 41 long titles at once.",
     "Cloudflare Email Obfuscation OFF (user has no CF access; skipped).",
-    "Edit brndini-seo-master plugin PHP to permanently change LinkedIn URL (JS snippet covers runtime today)."
+    "Edit brndini-seo-master plugin PHP to permanently change LinkedIn URL (JS snippet covers runtime today).",
+    "HSTS header (Strict-Transport-Security) — add via Cloudways Application > Security > Headers, or Cloudflare page rule. Not applicable via REST."
   ]
 }
