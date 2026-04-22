@@ -1,32 +1,58 @@
 {
   "audit_date": "2026-04-22",
   "site": "https://brndini.co.il",
-  "summary": {
-    "published": 311,
-    "indexable": 299,
-    "titles_present_pct": 100.0,
-    "meta_desc_present_pct": 100.0,
-    "canonical_present_pct": 100.0,
+  "final_state": {
+    "published_urls": 311,
+    "indexable_urls": 299,
+    "http_200_rate": "100%",
+    "canonical_rate": "100%",
+    "meta_description_rate": "100%",
+    "h1_rate": "100%",
+    "og_image_rate": "100%",
     "duplicate_titles": 0,
-    "duplicate_descs": 0,
+    "duplicate_descriptions": 0,
     "titles_over_65_chars": 41,
-    "descs_over_160_chars": 3,
-    "sitemap_ok": true,
-    "robots_txt_ok": true
+    "descriptions_over_160_chars": 3,
+    "hreflang": "he-IL + x-default, valid",
+    "schema_types_detected": [
+      "WebPage",
+      "BreadcrumbList",
+      "Organization",
+      "ProfessionalService",
+      "SearchAction",
+      "FAQPage"
+    ],
+    "sitemap_status": "valid, 321 URLs, includes all indexable pages",
+    "robots_txt": "valid, AI crawlers allowed, sensitive paths disallowed",
+    "redirect_chains": 0,
+    "redirect_loops": 0,
+    "broken_css_js_resources": 0,
+    "orphan_indexable_pages": 17,
+    "note_on_orphans": "BLA internal-linking autopilot runs daily and will link orphans over time based on semantic relevance."
   },
-  "live_fixes": [
-    "Enabled Yoast PHP redirects (was disabled).",
-    "Added 7 × 301 redirects for broken footer URLs (privacy, copywriting, SEO, 2 case-study, Hebrew + percent-encoded variants).",
-    "Verified all 7 redirects resolve with 301 → final 200.",
-    "Replaced 14 occurrences of broken image files (placeholder-*, עיצוב-ללא-שם-45.png, etc.) with known-good assets in active templates and pages.",
-    "Removed Cloudflare email obfuscation injection trigger on Accessibility page (replaced plaintext email with \"office [at]\" pattern).",
-    "Updated excerpt on 3 long-description posts (322505, 322826, 322835).",
-    "Deployed Elementor snippet at elementor_body_end that rewrites bad LinkedIn URL (linkedin.com/company/brndini -> linkedin.com/company/mdn-il) client-side across the site."
+  "fixes_applied_live": [
+    "Enabled Yoast PHP redirects (was disabled) - `PUT /yoast/v1/redirects/settings`.",
+    "7 new 301 redirects for broken footer URLs + Hebrew and percent-encoded variants.",
+    "Replaced 14 broken image references (placeholder-*, corrupted Hebrew filenames) with known-good assets in active templates (header 320007 + contact 266104) and pages (home/services/about/ty).",
+    "Removed plaintext email on accessibility page to defeat Cloudflare email obfuscation there.",
+    "Shortened excerpts on 3 posts with 160+ char meta descriptions.",
+    "Deployed Elementor snippet (ID 327451) at elementor_body_end that rewrites both <a href> AND <script type=application/ld+json> occurrences of linkedin.com/company/brndini to /company/mdn-il, site-wide, with MutationObserver for dynamic content."
   ],
-  "requires_admin_for_perfect": [
-    "Yoast title template change (Posts): set SEO title to \"%%title%%\" to retire the ~22-char trailing \"| category | brand\" and instantly fix 41 long titles.",
-    "Disable Cloudflare Email Obfuscation (Scrape Shield) to remove cdn-cgi/l/email-protection 404s in external link scanners.",
-    "Edit brndini-seo-master custom footer PHP: change /company/brndini/ → /company/mdn-il/ so the source HTML is already correct (our JS snippet fixes at runtime today).",
-    "Change LinkedIn URL inside ProfessionalService JSON-LD schema (brndini-seo-master plugin)."
+  "requires_admin_access_not_rest": [
+    "Yoast title template: Posts SEO title \"%%title%% %%sep%% %%sitename%%\" -> \"%%title%%\" to shorten 41 long titles at once.",
+    "Cloudflare Scrape Shield -> Email Address Obfuscation -> OFF to kill residual /cdn-cgi/l/email-protection 404s (requires Cloudflare access — skipped by user).",
+    "Edit PHP in brndini-seo-master plugin to permanently change LinkedIn URL (JS fix covers this at runtime today)."
+  ],
+  "snippets_deployed": [
+    {
+      "id": 327439,
+      "purpose": "mega-menu pointer-events phantom link fix",
+      "location": "elementor_head"
+    },
+    {
+      "id": 327451,
+      "purpose": "rewrite bad LinkedIn URL in <a> and JSON-LD",
+      "location": "elementor_body_end"
+    }
   ]
 }
