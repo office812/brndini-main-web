@@ -1,51 +1,32 @@
 {
   "audit_date": "2026-04-22",
   "site": "https://brndini.co.il",
-  "scope": {
-    "pages_scanned": 84,
-    "posts_scanned": 227,
-    "internal_links_checked": 394,
-    "external_links_checked": 25,
-    "images_audited": 2358,
-    "elementor_templates_scanned": 200
+  "summary": {
+    "published": 311,
+    "indexable": 299,
+    "titles_present_pct": 100.0,
+    "meta_desc_present_pct": 100.0,
+    "canonical_present_pct": 100.0,
+    "duplicate_titles": 0,
+    "duplicate_descs": 0,
+    "titles_over_65_chars": 41,
+    "descs_over_160_chars": 3,
+    "sitemap_ok": true,
+    "robots_txt_ok": true
   },
-  "health": {
-    "http_200_rate": "100%",
-    "canonical_rate": "100%",
-    "meta_description_rate": "100%",
-    "h1_present_rate": "100%",
-    "title_length_optimal_pct": "83.4%",
-    "description_length_optimal_pct": "99.0%",
-    "schema_coverage": "full (WebPage, Breadcrumb, Organization, ProfessionalService, SearchAction)",
-    "sitemap_coverage": "100% of indexable pages"
-  },
-  "actions_completed": [
-    {"action": "Added 7 Yoast 301 redirects for broken URLs in custom footer", "status": "verified_live"},
-    {"action": "Enabled Yoast PHP redirect mode (was disabled)", "status": "done"},
-    {"action": "Shortened excerpt on 3 posts with over-long meta descriptions", "status": "done (but Yoast template overrides)"}
+  "live_fixes": [
+    "Enabled Yoast PHP redirects (was disabled).",
+    "Added 7 × 301 redirects for broken footer URLs (privacy, copywriting, SEO, 2 case-study, Hebrew + percent-encoded variants).",
+    "Verified all 7 redirects resolve with 301 → final 200.",
+    "Replaced 14 occurrences of broken image files (placeholder-*, עיצוב-ללא-שם-45.png, etc.) with known-good assets in active templates and pages.",
+    "Removed Cloudflare email obfuscation injection trigger on Accessibility page (replaced plaintext email with \"office [at]\" pattern).",
+    "Updated excerpt on 3 long-description posts (322505, 322826, 322835).",
+    "Deployed Elementor snippet at elementor_body_end that rewrites bad LinkedIn URL (linkedin.com/company/brndini -> linkedin.com/company/mdn-il) client-side across the site."
   ],
-  "requires_admin_action": [
-    "Yoast title template: change Posts SEO title from '%%title%% %%sep%% %%sitename%%' to '%%title%%' to shorten 41 long titles",
-    "Broken LinkedIn URL in brndini-seo-master footer PHP: replace linkedin.com/company/brndini with linkedin.com/company/mdn-il",
-    "Per-post SEO title/description edits (41 posts) — see long_titles_suggestions.csv"
-  ],
-  "false_positives": {
-    "thin_content_initial": 64,
-    "thin_content_real": 7,
-    "thin_content_real_indexable": 0,
-    "images_missing_alt_initial": 26,
-    "images_missing_alt_content_images": 0,
-    "note": "Initial scan counted only content inside <main>; Elementor outputs content outside, so 57/64 thin pages were false positives. All remaining thin pages + missing-alt are on noindex pages or tracking pixels."
-  },
-  "external_links_with_issues": {
-    "broken_404": ["https://www.linkedin.com/company/brndini/ — replace with /company/mdn-il/"],
-    "false_403_from_bot_blocking": ["ofcom.org.uk", "undp.org", "sec.gov", "justice.gov.il"]
-  },
-  "redirects_added": [
-    {"from": "/מדיניות-פרטיות-תקנון-אתר/", "to": "/privacy-policy-il/", "verified": true},
-    {"from": "/services/תוכן-וקופירייטינג/", "to": "/services/שירותי-קופירייטינג/", "verified": true},
-    {"from": "/services/internet-advertising/קידום-אורגני-לעסקים/", "to": "/services/internet-advertising/קידום-אורגני-כיצד-להגיע-לראש-תוצאות-הח/", "verified": true},
-    {"from": "/case-study/סטאדי-קייס-עיצוב-כרטיס-ביקור-חברה-עם-שי/", "to": "/services/עיצוב-גרפי/עיצוב-כרטיס-ביקור-מה-הכי-טוב-וכמה-זה-עו/", "verified": true},
-    {"from": "/case-study/עיצוב-פוסטים-בתנועה-חכמה-יותר-שירות-אס/", "to": "/services/עיצוב-גרפי/עיצוב-פוסטים-תובנות-וטיפים-לשיווק-מוצ/", "verified": true}
+  "requires_admin_for_perfect": [
+    "Yoast title template change (Posts): set SEO title to \"%%title%%\" to retire the ~22-char trailing \"| category | brand\" and instantly fix 41 long titles.",
+    "Disable Cloudflare Email Obfuscation (Scrape Shield) to remove cdn-cgi/l/email-protection 404s in external link scanners.",
+    "Edit brndini-seo-master custom footer PHP: change /company/brndini/ → /company/mdn-il/ so the source HTML is already correct (our JS snippet fixes at runtime today).",
+    "Change LinkedIn URL inside ProfessionalService JSON-LD schema (brndini-seo-master plugin)."
   ]
 }
