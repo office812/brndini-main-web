@@ -6,6 +6,10 @@
 # Run on the WordPress host (SSH) where WP-CLI is installed, from the site
 # root, or pass --path=/path/to/wordpress.
 #
+# If posting to wp-admin/options.php manually (no WP-CLI): Yoast's new settings
+# UI uses option_page=wpseo_page_settings (not wpseo_titles) and _wpnonce from
+# the inline script yoast-seo-new-settings-js-extra → wpseoScriptData.nonce.
+#
 #   bash seo-audit/apply_yoast_post_title_template_round7.sh
 #
 # Verify afterwards:
