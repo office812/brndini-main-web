@@ -65,9 +65,13 @@ def collect(endpoint: str, type_label: str) -> list[dict]:
             link = p.get("link", "")
             title_obj = p.get("title") or {}
             post_title = title_obj.get("raw") or title_obj.get("rendered", "")
+            yo_title = (p.get("yoast_seo_title") or "").strip()
+            yo_desc = (p.get("yoast_seo_metadesc") or "").strip()
             meta = p.get("meta") or {}
-            yo_title = meta.get("_yoast_wpseo_title") or ""
-            yo_desc = meta.get("_yoast_wpseo_metadesc") or ""
+            if not yo_title:
+                yo_title = meta.get("_yoast_wpseo_title") or ""
+            if not yo_desc:
+                yo_desc = meta.get("_yoast_wpseo_metadesc") or ""
             yj = p.get("yoast_head_json") or {}
             if not yo_title:
                 yo_title = yj.get("title", "") or ""

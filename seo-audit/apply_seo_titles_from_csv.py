@@ -6,11 +6,10 @@ CSV columns (header required):
   type,id,seo_title,meta_desc
   — type: post | page
   — id: numeric WordPress ID
-  — seo_title: written to _yoast_wpseo_title (empty cell = skip)
-  — meta_desc: written to _yoast_wpseo_metadesc (empty cell = skip)
+  — seo_title: sent as REST field **yoast_seo_title** → _yoast_wpseo_title (empty = skip)
+  — meta_desc: sent as **yoast_seo_metadesc** → _yoast_wpseo_metadesc (empty = skip)
 
-Prerequisite: upload mu-plugins/brndini-yoast-rest-meta.php to the site
-(wp-content/mu-plugins/) so these meta keys are REST-writable.
+Prerequisite: plugin **Brndini Yoast REST** active (from repo zip or mu-plugins copy).
 
 Usage:
   export WORDPRESS_USERNAME=... WORDPRESS_APP_PASSWORD=...
@@ -87,18 +86,27 @@ def main() -> None:
             skip += 1
             continue
 
-        meta: dict[str, str] = {}
+        payload: dict[str, str] = {}
         if seo_title:
-            meta["_yoast_wpseo_title"] = seo_title
+            payload["yoast_seo_title"] = seo_title
         if meta_desc:
-            meta["_yoast_wpseo_metadesc"] = meta_desc
+            payload["yoast_seo_metadesc"] = meta_desc
 
         endpoint = f"{BASE}/wp-json/wp/v2/{'posts' if typ == 'post' else 'pages'}/{rid}"
         try:
-            out = post_json(endpoint, {"meta": meta})
-            m = out.get("meta") or {}
-            if seo_title and m.get("_yoast_wpseo_title") != seo_title:
-                print(f"WARN {typ} {rid}: title may not persist (REST meta not registered?)", file=sys.stderr)
+            out = post_json(endpoint, payload)
+            got_title = (out.get("yoast_seo_title") or "").strip()
+            got_desc = (out.get("yoast_seo_metadesc") or "").strip()
+            if seo_title and got_title != seo_title:
+                print(
+                    f"WARN {typ} {rid}: yoast_seo_title mismatch (plugin inactive? got {got_title!r})",
+                    file=sys.stderr,
+                )
+            if meta_desc and got_desc != meta_desc:
+                print(
+                    f"WARN {typ} {rid}: yoast_seo_metadesc mismatch (got {got_desc!r})",
+                    file=sys.stderr,
+                )
             ok += 1
             print(f"OK {typ} {rid}")
         except urllib.error.HTTPError as e:

@@ -4,13 +4,15 @@
 
 ## שלב 1 — קובץ PHP באתר (חד־פעמי)
 
-1. צור תיקייה `wp-content/mu-plugins/` אם אין.
-2. העתק את הקובץ מהריפו:  
-   `seo-audit/mu-plugins/brndini-yoast-rest-meta.php`  
-   ל־`wp-content/mu-plugins/brndini-yoast-rest-meta.php`
-3. אין צורך “להפעיל” תוסף — קבצי mu-plugins נטענים אוטומטית.
+**אפשרות א׳ — תוסף (מומלץ לניהול גרסאות)**  
+1. צור ZIP מהתיקייה `seo-audit/mu-plugins/brndini-yoast-rest-meta/` (או השתמש ב־ZIP מהריפו אם קיים).  
+2. **תוספים → הוסף חדש → העלאה** והתקן.  
+3. **הפעל** את התוסף **Brndini Yoast REST** (חובה — בלי הפעלה השדות לא יופיעו ב־REST).
 
-הקובץ גורם ל־WordPress לקבל עדכונים ל־`_yoast_wpseo_title` ו־`_yoast_wpseo_metadesc` דרך REST (Application Password).
+**אפשרות ב׳ — Must-Use**  
+העתק את `brndini-yoast-rest-meta.php` ל־`wp-content/mu-plugins/` — נטען תמיד בלי כפתור הפעלה.
+
+התוסף מוסיף שדות REST בשם **`yoast_seo_title`** ו־**`yoast_seo_metadesc`** — הם נשמרים ב־`_yoast_wpseo_title` ו־`_yoast_wpseo_metadesc` (Application Password).
 
 ## שלב 2 — ייצוא תבנית CSV
 
