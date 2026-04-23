@@ -48,6 +48,14 @@ Or **wp-admin** → Yoast SEO → **Settings** → **Content types** → **Posts
 
 Legacy single-purpose scripts still work: `apply_internal_link_hub_round7.py`, `apply_yoast_post_title_template_round7.sh`.
 
+### כותרת SEO + מטא מותאמים לכל פוסט/עמוד (ייבוא המוני)
+
+מדריך מלא: **`seo-audit/YOAST_CUSTOM_SEO_GUIDE.md`**.
+
+1. העלה ל־`wp-content/mu-plugins/` את **`seo-audit/mu-plugins/brndini-yoast-rest-meta.php`**.
+2. ייצא CSV: `python3 seo-audit/export_yoast_csv_template.py > template.csv`
+3. מלא עמודות `seo_title` ו־`meta_desc`, אחר כך: `python3 seo-audit/apply_seo_titles_from_csv.py template.csv`
+
 ## Summary of findings
 
 Site is in very good SEO health:
