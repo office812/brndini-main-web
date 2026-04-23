@@ -21,6 +21,33 @@ python3 seo-audit/check_links.py    # ~1.5 min
 python3 seo-audit/check_external.py # ~30s
 ```
 
+### Round 7 — full plan automation (live site)
+
+These **mutate** the live WordPress site.
+
+**One-shot (recommended):** copy `seo-audit/credentials.example` → `seo-audit/credentials.local`, fill Application Password, then:
+
+```bash
+python3 seo-audit/apply_plan_round7.py   # hub link + tries Yoast meta on 3 posts
+python3 seo-audit/verify_plan_round7.py # read-only: hub marker + meta lengths
+```
+
+**Yoast post title template** (`%%title%%` only — fixes long SERP titles site-wide) is **not** in that script; run on the WP host:
+
+```bash
+bash seo-audit/apply_yoast_post_title_template_round7.sh
+```
+
+Or **wp-admin** → Yoast SEO → **Settings** → **Content types** → **Posts** → SEO title → `%%title%%`.
+
+**If meta POST is ignored by WordPress:** paste the three short descriptions from `seo-audit/SEO_META_FIXES_ROUND7.md`.
+
+**Semrush:** see `seo-audit/SEMRUSH_SITE_AUDIT.md` (enable JS rendering, re-crawl).
+
+**Optional infra (HSTS, LinkedIn PHP, double-slash):** `seo-audit/OPTIONAL_INFRA.md`.
+
+Legacy single-purpose scripts still work: `apply_internal_link_hub_round7.py`, `apply_yoast_post_title_template_round7.sh`.
+
 ## Summary of findings
 
 Site is in very good SEO health:

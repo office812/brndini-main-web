@@ -13,6 +13,9 @@
 # testing
 /coverage
 
+# Python
+__pycache__/
+
 # next.js
 /.next/
 /out/
@@ -32,6 +35,9 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+
+# Local WordPress API secrets for seo-audit scripts (never commit)
+seo-audit/credentials.local
 
 # vercel
 .vercel
