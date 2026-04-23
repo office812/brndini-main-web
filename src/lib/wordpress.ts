@@ -3,11 +3,16 @@ const WORDPRESS_USERNAME = process.env.WORDPRESS_USERNAME || '';
 const WORDPRESS_APP_PASSWORD = process.env.WORDPRESS_APP_PASSWORD || '';
 
 function getAuthHeaders(): HeadersInit {
-  const token = Buffer.from(`${WORDPRESS_USERNAME}:${WORDPRESS_APP_PASSWORD}`).toString('base64');
-  return {
-    'Authorization': `Basic ${token}`,
+  const headers: HeadersInit = {
     'Content-Type': 'application/json',
   };
+
+  if (WORDPRESS_USERNAME && WORDPRESS_APP_PASSWORD) {
+    const token = Buffer.from(`${WORDPRESS_USERNAME}:${WORDPRESS_APP_PASSWORD}`).toString('base64');
+    headers.Authorization = `Basic ${token}`;
+  }
+
+  return headers;
 }
 
 export interface WPPage {
