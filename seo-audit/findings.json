@@ -71,18 +71,25 @@
     }
   ],
   "round_7_automation": {
+    "unified_script": "seo-audit/apply_plan_round7.py (hub page 1851 + Yoast meta on posts 322835, 322826, 322505; reads seo-audit/credentials.local or env)",
+    "verify_script": "seo-audit/verify_plan_round7.py (no auth)",
     "yoast_post_title_template": {
       "option_key": "title-post inside wpseo_titles",
       "target_value": "%%title%%",
       "repo_script": "seo-audit/apply_yoast_post_title_template_round7.sh (WP-CLI on the WordPress host)",
-      "agent_env_status": "No WORDPRESS_USERNAME / WORDPRESS_APP_PASSWORD in this agent environment; Yoast snippet templates are not exposed on /wp/v2/settings. Apply via WP-CLI or wp-admin."
+      "note": "Not exposed on /wp/v2/settings; Yoast REST is read-only for options."
     },
     "hub_internal_link_category_atrim": {
       "hub_page_id": 1851,
       "target_url": "https://brndini.co.il/category/%d7%90%d7%aa%d7%a8%d7%99%d7%9d/",
-      "repo_script": "seo-audit/apply_internal_link_hub_round7.py (REST with application password)",
-      "agent_env_status": "Same: credentials required to POST updated HTML to /wp/v2/pages/1851."
-    }
+      "repo_script": "apply_plan_round7.py or apply_internal_link_hub_round7.py"
+    },
+    "meta_descriptions_over_160": {
+      "post_ids": [322835, 322826, 322505],
+      "strategy": "Copy excerpt (plain text) into _yoast_wpseo_metadesc via REST; fallback strings in SEO_META_FIXES_ROUND7.md"
+    },
+    "semrush_js_rendering": "seo-audit/SEMRUSH_SITE_AUDIT.md",
+    "optional_infra": "seo-audit/OPTIONAL_INFRA.md"
   },
   "requires_admin_access_not_rest": [
     "Yoast title template: Posts SEO title \"%%title%% %%sep%% %%sitename%%\" -> \"%%title%%\" to shorten 41 long titles at once. (Automatable on-host via seo-audit/apply_yoast_post_title_template_round7.sh with WP-CLI.)",
@@ -92,7 +99,9 @@
     "Semrush: re-crawl the site with \"JS rendering\" enabled (Project Settings -> Site Audit -> JS rendering -> Enabled). The existing 362 wa.me \"broken external links\" are false positives caused by wa.me blocking bots; the deployed JS rewrite converts them to internal /whatsapp/ links on page load."
   ],
   "fixes_pending_deployment_round7": [
-    "Run seo-audit/apply_yoast_post_title_template_round7.sh on the WordPress server (WP-CLI) to set wpseo_titles[title-post]=%%title%%, then purge FlyingPress cache and spot-check a few post <title> tags.",
-    "Run seo-audit/apply_internal_link_hub_round7.py with WORDPRESS_USERNAME + WORDPRESS_APP_PASSWORD to inject a visible hub→category archive paragraph on page 1851, then purge cache."
+    "Create seo-audit/credentials.local from credentials.example (gitignored), then: python3 seo-audit/apply_plan_round7.py && python3 seo-audit/verify_plan_round7.py",
+    "On WordPress host: bash seo-audit/apply_yoast_post_title_template_round7.sh (wpseo_titles[title-post]=%%title%%), purge FlyingPress, spot-check <title> on sample posts.",
+    "Semrush: follow seo-audit/SEMRUSH_SITE_AUDIT.md and re-run audit.",
+    "If REST ignores Yoast meta: paste from seo-audit/SEO_META_FIXES_ROUND7.md in wp-admin for the three post IDs."
   ]
 }
