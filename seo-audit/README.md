@@ -21,6 +21,20 @@ python3 seo-audit/check_links.py    # ~1.5 min
 python3 seo-audit/check_external.py # ~30s
 ```
 
+### Round 7 — Yoast post title template + hub→category inlink
+
+These **mutate** the live WordPress site. They are not part of the read-only crawl.
+
+```bash
+# (A) On the WordPress host with WP-CLI — shorten default post SEO titles
+bash seo-audit/apply_yoast_post_title_template_round7.sh
+
+# (B) From any machine with credentials — add archive CTA to hub page 1851
+export WORDPRESS_USERNAME='...'
+export WORDPRESS_APP_PASSWORD='...'
+python3 seo-audit/apply_internal_link_hub_round7.py
+```
+
 ## Summary of findings
 
 Site is in very good SEO health:
