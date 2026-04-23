@@ -56,7 +56,8 @@
     "Added security meta snippet (327457) with Content-Security-Policy upgrade-insecure-requests + Referrer-Policy strict-origin-when-cross-origin at elementor_head.",
     "Created noindex bridge page /whatsapp/ (id 327458) with JS redirect + <noscript> meta-refresh + visible fallback button for graceful degradation. Snippet 327459 injects meta robots=noindex,nofollow,noarchive only on /whatsapp/ path.",
     "Deployed Elementor snippet 327460 at elementor_body_end that rewrites every a[href*=wa.me/] to /whatsapp/?text=... with MutationObserver for dynamic content. Resolves Semrush false-positive \"362 external links broken\" once the audit runs with JS rendering enabled.",
-    "Generated 19 new featured images for posts that were missing one, via Leonardo AI (Phoenix 1.0). Consistent brand vibe: blue #1D61F2 to purple #745DB6 gradient, soft 3D hero objects matched to each topic (TikTok phone, LinkedIn briefcase, design tools, landing-page mockup). Images converted to WebP (~34-75KB each), uploaded with Hebrew alt text, set as featured_media. After re-saving each post, Yoast now serves the new image as og:image on all 19 posts."
+    "Generated 19 new featured images for posts that were missing one, via Leonardo AI (Phoenix 1.0). Consistent brand vibe: blue #1D61F2 to purple #745DB6 gradient, soft 3D hero objects matched to each topic (TikTok phone, LinkedIn briefcase, design tools, landing-page mockup). Images converted to WebP (~34-75KB each), uploaded with Hebrew alt text, set as featured_media. After re-saving each post, Yoast now serves the new image as og:image on all 19 posts.",
+    "Round 7 live (2026-04-23): REST POST updated hub page 1851 (website-building) with visible internal link + CTA paragraph to category archive /category/%d7%90%d7%aa%d7%a8%d7%99%d7%9d/ (אתרים). Verified via verify_plan_round7.py."
   ],
   "snippets_deployed_via_rest": [
     {
@@ -99,9 +100,8 @@
     "Semrush: re-crawl the site with \"JS rendering\" enabled (Project Settings -> Site Audit -> JS rendering -> Enabled). The existing 362 wa.me \"broken external links\" are false positives caused by wa.me blocking bots; the deployed JS rewrite converts them to internal /whatsapp/ links on page load."
   ],
   "fixes_pending_deployment_round7": [
-    "Create seo-audit/credentials.local from credentials.example (gitignored), then: python3 seo-audit/apply_plan_round7.py && python3 seo-audit/verify_plan_round7.py",
+    "Yoast meta on posts 322835, 322826, 322505: WordPress REST did not persist _yoast_wpseo_metadesc (Yoast meta not registered show_in_rest). Paste short descriptions from seo-audit/SEO_META_FIXES_ROUND7.md in wp-admin per post, then purge FlyingPress.",
     "On WordPress host: bash seo-audit/apply_yoast_post_title_template_round7.sh (wpseo_titles[title-post]=%%title%%), purge FlyingPress, spot-check <title> on sample posts.",
-    "Semrush: follow seo-audit/SEMRUSH_SITE_AUDIT.md and re-run audit.",
-    "If REST ignores Yoast meta: paste from seo-audit/SEO_META_FIXES_ROUND7.md in wp-admin for the three post IDs."
+    "Semrush: follow seo-audit/SEMRUSH_SITE_AUDIT.md and re-run audit."
   ]
 }
