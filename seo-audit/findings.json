@@ -11,8 +11,8 @@
     "og_image_rate": "100%",
     "duplicate_titles": 0,
     "duplicate_descriptions": 0,
-    "titles_over_65_chars": 41,
-    "descriptions_over_160_chars": 3,
+    "titles_over_65_chars": 40,
+    "descriptions_over_160_chars": 0,
     "hreflang": "he-IL + x-default, valid",
     "schema_types_detected": [
       "WebPage",
@@ -57,7 +57,10 @@
     "Created noindex bridge page /whatsapp/ (id 327458) with JS redirect + <noscript> meta-refresh + visible fallback button for graceful degradation. Snippet 327459 injects meta robots=noindex,nofollow,noarchive only on /whatsapp/ path.",
     "Deployed Elementor snippet 327460 at elementor_body_end that rewrites every a[href*=wa.me/] to /whatsapp/?text=... with MutationObserver for dynamic content. Resolves Semrush false-positive \"362 external links broken\" once the audit runs with JS rendering enabled.",
     "Generated 19 new featured images for posts that were missing one, via Leonardo AI (Phoenix 1.0). Consistent brand vibe: blue #1D61F2 to purple #745DB6 gradient, soft 3D hero objects matched to each topic (TikTok phone, LinkedIn briefcase, design tools, landing-page mockup). Images converted to WebP (~34-75KB each), uploaded with Hebrew alt text, set as featured_media. After re-saving each post, Yoast now serves the new image as og:image on all 19 posts.",
-    "Round 7 live (2026-04-23): REST POST updated hub page 1851 (website-building) with visible internal link + CTA paragraph to category archive /category/%d7%90%d7%aa%d7%a8%d7%99%d7%9d/ (אתרים). Verified via verify_plan_round7.py."
+    "Round 7 live (2026-04-23): REST POST updated hub page 1851 (website-building) with visible internal link + CTA paragraph to category archive /category/%d7%90%d7%aa%d7%a8%d7%99%d7%9d/ (אתרים). Verified via verify_plan_round7.py.",
+    "Round 7 live (2026-04-23): Yoast meta descriptions shortened on posts 322835, 322826, 322505 via wp-admin post.php form (yoast_wpseo_metadesc); yoast_head_json.description now under 160 chars each.",
+    "Round 7 live (2026-04-23): Yoast default post SEO title template set to %%title%% only via POST to wp-admin/options.php with option_page=wpseo_page_settings and nonce from wpseoScriptData (Yoast new settings UI). Brief accidental post_title corruption on those three posts (form had placeholder \"x\") was restored from Yoast get_head json title before the pipe.",
+    "After title-post template change: re-count via REST shows ~40 posts with generated Yoast title string still >65 chars (long H1s); per-post SEO title overrides in Yoast still available if further shortening is needed."
   ],
   "snippets_deployed_via_rest": [
     {
@@ -78,6 +81,7 @@
       "option_key": "title-post inside wpseo_titles",
       "target_value": "%%title%%",
       "repo_script": "seo-audit/apply_yoast_post_title_template_round7.sh (WP-CLI on the WordPress host)",
+      "live_applied": "2026-04-23 via wp-admin/options.php; use option_page=wpseo_page_settings (not wpseo_titles) with nonce from yoast-seo-new-settings-js-extra wpseoScriptData.nonce — plain wpseo_titles returns 403 on this host.",
       "note": "Not exposed on /wp/v2/settings; Yoast REST is read-only for options."
     },
     "hub_internal_link_category_atrim": {
@@ -87,21 +91,20 @@
     },
     "meta_descriptions_over_160": {
       "post_ids": [322835, 322826, 322505],
-      "strategy": "Copy excerpt (plain text) into _yoast_wpseo_metadesc via REST; fallback strings in SEO_META_FIXES_ROUND7.md"
+      "strategy": "Applied via wp-admin post edit form (REST meta not writable). Fallback text still in SEO_META_FIXES_ROUND7.md."
     },
     "semrush_js_rendering": "seo-audit/SEMRUSH_SITE_AUDIT.md",
     "optional_infra": "seo-audit/OPTIONAL_INFRA.md"
   },
   "requires_admin_access_not_rest": [
-    "Yoast title template: Posts SEO title \"%%title%% %%sep%% %%sitename%%\" -> \"%%title%%\" to shorten 41 long titles at once. (Automatable on-host via seo-audit/apply_yoast_post_title_template_round7.sh with WP-CLI.)",
+    "Yoast per-post SEO titles: ~40 posts still have Yoast-generated title strings over 65 characters after template=%%title%%; shorten in Yoast sidebar per post if SERP truncation is a concern.",
     "Cloudflare Email Obfuscation OFF (user has no CF access; skipped).",
     "Edit brndini-seo-master plugin PHP to permanently change LinkedIn URL (JS snippet covers runtime today).",
     "HSTS header (Strict-Transport-Security) — add via Cloudways Application > Security > Headers, or Cloudflare page rule. Not applicable via REST.",
     "Semrush: re-crawl the site with \"JS rendering\" enabled (Project Settings -> Site Audit -> JS rendering -> Enabled). The existing 362 wa.me \"broken external links\" are false positives caused by wa.me blocking bots; the deployed JS rewrite converts them to internal /whatsapp/ links on page load."
   ],
   "fixes_pending_deployment_round7": [
-    "Yoast meta on posts 322835, 322826, 322505: WordPress REST did not persist _yoast_wpseo_metadesc (Yoast meta not registered show_in_rest). Paste short descriptions from seo-audit/SEO_META_FIXES_ROUND7.md in wp-admin per post, then purge FlyingPress.",
-    "On WordPress host: bash seo-audit/apply_yoast_post_title_template_round7.sh (wpseo_titles[title-post]=%%title%%), purge FlyingPress, spot-check <title> on sample posts.",
+    "Purge FlyingPress cache so HTML <title> and meta pick up Yoast template + metadesc changes site-wide.",
     "Semrush: follow seo-audit/SEMRUSH_SITE_AUDIT.md and re-run audit."
   ]
 }
